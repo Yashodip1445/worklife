@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redefining Equilibrium: Work-Life Integration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices: 
+        - Overview: Text blocks for introduction. (HTML/Tailwind)
+        - Myths (Section 2): Interactive cards for each myth, revealing "Traditional Belief" vs. "Integrated Reality". (HTML/Tailwind, JS)
+        - Paradigm Shift (Section 3): Comparative text blocks/table for "Balance" vs. "Integration", listing core principles. (HTML/Tailwind)
+        - Impacts (Section 4): Icon + text for individual/organizational impacts. Bar charts for healthcare burnout (50%) and manufacturing stress (70%). (HTML/Tailwind, JS for toggles, Chart.js)
+        - Cultural & Industry (Section 5): Clickable cards for cultural dimensions and industries (Tech, Healthcare, Manufacturing, Creative), revealing details. Bar chart/stats for Tech industry benefits (25% lower turnover, 50% healthcare cost reduction). (HTML/Tailwind, JS, Chart.js)
+        - Strategies (Section 6): Accordion for strategy categories (Mindset, Boundary, etc.) for individual & organizational actions. (HTML/Tailwind, JS)
+        - Conclusion (Section 7): Text block. (HTML/Tailwind)
+        All interactions support the designed thematic structure and aim for clarity and engagement.
+    -->
+    <style>
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .nav-link { transition: color 0.3s ease; }
+        .nav-link.active { color: #059669; /* emerald-600 */ font-weight: 600; border-bottom: 2px solid #059669; }
+        .content-section { min-height: 80vh; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; max-height: 400px;} }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .accordion-content.open { max-height: 1000px; /* Adjust as needed */ }
+        .tab-button.active { background-color: #059669; color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .sticky-nav { position: -webkit-sticky; position: sticky; top: 0; z-index: 50; }
+        .card-hover { transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="bg-amber-50 text-neutral-800">
+
+    <nav id="navbar" class="sticky-nav bg-amber-100 shadow-md">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-emerald-700">Work-Life Reimagined</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#overview" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-neutral-700 hover:text-emerald-600">Overview</a>
+                        <a href="#myths" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-neutral-700 hover:text-emerald-600">Myths</a>
+                        <a href="#shift" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-neutral-700 hover:text-emerald-600">The Shift</a>
+                        <a href="#impacts" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-neutral-700 hover:text-emerald-600">Impacts</a>
+                        <a href="#context" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-neutral-700 hover:text-emerald-600">Context</a>
+                        <a href="#strategies" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-neutral-700 hover:text-emerald-600">Strategies</a>
+                        <a href="#conclusion" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-neutral-700 hover:text-emerald-600">Conclusion</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-neutral-600 hover:text-emerald-600 hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-emerald-500">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#overview" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-700 hover:text-emerald-600 hover:bg-amber-200">Overview</a>
+                <a href="#myths" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-700 hover:text-emerald-600 hover:bg-amber-200">Myths</a>
+                <a href="#shift" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-700 hover:text-emerald-600 hover:bg-amber-200">The Shift</a>
+                <a href="#impacts" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-700 hover:text-emerald-600 hover:bg-amber-200">Impacts</a>
+                <a href="#context" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-700 hover:text-emerald-600 hover:bg-amber-200">Context</a>
+                <a href="#strategies" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-700 hover:text-emerald-600 hover:bg-amber-200">Strategies</a>
+                <a href="#conclusion" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-700 hover:text-emerald-600 hover:bg-amber-200">Conclusion</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <section id="overview" class="content-section py-12 md:py-20">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl sm:text-5xl font-bold text-emerald-700 mb-4">Redefining Equilibrium</h1>
+                <p class="text-xl text-neutral-600 max-w-3xl mx-auto">Debunking the Myths of Work-Life Balance for a Sustainable Future. This interactive guide explores the evolution from rigid 'balance' to fluid 'integration', offering insights and strategies for a more fulfilling life journey.</p>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-amber-200">
+                <h2 class="text-2xl font-semibold text-emerald-600 mb-3">Executive Summary Insights</h2>
+                <p class="text-neutral-700 leading-relaxed mb-4">The traditional concept of a 50/50 work-life split is outdated. This application explores why this notion persists despite its flaws, reflecting a deep human desire for harmony. We'll debunk common misconceptions and advocate for "work-life integration" or "work-life success," emphasizing flexibility, quality engagement, and outcome-oriented approaches. Discover how cultural and industry factors shape these dynamics and find actionable strategies for a more balanced and fulfilling life.</p>
+                <p class="text-neutral-700 leading-relaxed">The journey to a sustainable work-life dynamic involves moving beyond a zero-sum game to a synergistic relationship between professional and personal life. This guide is designed to help you navigate this shift.</p>
+            </div>
+        </section>
+
+        <section id="myths" class="content-section py-12 md:py-20 bg-amber-100 rounded-xl shadow-lg my-8 p-6 md:p-10">
+            <h2 class="text-3xl font-bold text-center text-emerald-700 mb-10">Debunking Pervasive Myths</h2>
+            <p class="text-center text-neutral-600 mb-12 max-w-2xl mx-auto">The pursuit of work-life balance is often clouded by misconceptions. Click on each myth to explore the traditional belief versus the integrated reality, helping to pave the way for genuine well-being.</p>
+            <div id="myths-container" class="space-y-6">
+                </div>
+        </section>
+
+        <section id="shift" class="content-section py-12 md:py-20">
+            <h2 class="text-3xl font-bold text-center text-emerald-700 mb-10">The Paradigm Shift: Balance vs. Integration</h2>
+            <p class="text-center text-neutral-600 mb-12 max-w-2xl mx-auto">A significant evolution is underway, moving from a rigid 'balance' to a more fluid 'integration' or 'success'. This section contrasts these approaches and highlights the core principles of the modern view.</p>
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-amber-200">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-red-600 mb-3">Work-Life Balance (Traditional)</h3>
+                        <ul class="list-disc list-inside space-y-2 text-neutral-700">
+                            <li><strong>Philosophy:</strong> Work and life are separate, often competing.</li>
+                            <li><strong>Boundaries:</strong> Rigid, strict separation.</li>
+                            <li><strong>Focus:</strong> Equal division of time (e.g., 50/50).</li>
+                            <li><strong>Outcome:</strong> A static, perfectly balanced state.</li>
+                            <li><strong>Analogy:</strong> A seesaw, requiring constant, precarious balancing.</li>
+                            <li><strong>Applicability:</strong> More aligned with fixed-hour, physically present roles.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-emerald-600 mb-3">Work-Life Integration/Success (Modern)</h3>
+                        <ul class="list-disc list-inside space-y-2 text-neutral-700">
+                            <li><strong>Philosophy:</strong> Work and life are intertwined, synergistic.</li>
+                            <li><strong>Boundaries:</strong> Flexible, fluid blending.</li>
+                            <li><strong>Focus:</strong> Quality of engagement, outcomes, fulfillment.</li>
+                            <li><strong>Outcome:</strong> A dynamic, adaptable, personalized life.</li>
+                            <li><strong>Analogy:</strong> A circle or blend, where each part fuels the other.</li>
+                            <li><strong>Applicability:</strong> Suited for knowledge workers with autonomy.</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr class="my-8 border-amber-300">
+                <h3 class="text-xl font-semibold text-emerald-700 mt-8 mb-4">Core Principles of Integration:</h3>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-emerald-50 p-4 rounded-lg shadow">
+                        <h4 class="font-bold text-emerald-600">Flexibility</h4>
+                        <p class="text-sm text-neutral-600">Adapting to change, embracing flexible work arrangements.</p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-lg shadow">
+                        <h4 class="font-bold text-emerald-600">Autonomy</h4>
+                        <p class="text-sm text-neutral-600">Control over schedules and work, trusting individuals.</p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-lg shadow">
+                        <h4 class="font-bold text-emerald-600">Quality of Engagement</h4>
+                        <p class="text-sm text-neutral-600">Focus on depth of involvement, not just time spent.</p>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-lg shadow">
+                        <h4 class="font-bold text-emerald-600">Outcome-Oriented</h4>
+                        <p class="text-sm text-neutral-600">Measuring productivity by results and impact, not hours.</p>
+                    </div>
+                </div>
+                 <p class="mt-6 text-neutral-600 leading-relaxed">This shift is more than semantics; it's a philosophical transformation from a zero-sum game to a synergistic one, viewing work as an integral part of a fulfilling life, not an antagonist. True integration requires redefining success and redistributing control through autonomy.</p>
+            </div>
+        </section>
+
+        <section id="impacts" class="content-section py-12 md:py-20 bg-amber-100 rounded-xl shadow-lg my-8 p-6 md:p-10">
+            <h2 class="text-3xl font-bold text-center text-emerald-700 mb-10">Detrimental Impacts of Believing the Myths</h2>
+            <p class="text-center text-neutral-600 mb-12 max-w-2xl mx-auto">Perpetuating work-life balance myths has significant negative consequences for both individuals and organizations. Explore these impacts and understand the real costs.</p>
+            
+            <div class="mb-8 flex justify-center space-x-4">
+                <button class="tab-button bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg active" onclick="openTab(event, 'individual-impacts')">For Individuals</button>
+                <button class="tab-button bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg" onclick="openTab(event, 'organizational-impacts')">For Organizations</button>
+            </div>
+
+            <div id="individual-impacts" class="tab-content active">
+                <h3 class="text-2xl font-semibold text-emerald-600 mb-6 text-center">Consequences for Individuals</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg shadow card-hover">
+                        <h4 class="font-bold text-red-600 mb-2">Increased Stress & Burnout</h4>
+                        <p class="text-sm text-neutral-600">Relentless pressure leads to chronic stress, exhaustion, and burnout, an occupational phenomenon.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow card-hover">
+                        <h4 class="font-bold text-red-600 mb-2">Mental Health Issues</h4>
+                        <p class="text-sm text-neutral-600">Struggles contribute to fatigue, anxiety, depression, and in extreme cases, more severe outcomes.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow card-hover">
+                        <h4 class="font-bold text-red-600 mb-2">Strained Relationships</h4>
+                        <p class="text-sm text-neutral-600">Sacrificing personal time erodes connections with family and friends.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow card-hover">
+                        <h4 class="font-bold text-red-600 mb-2">Lack of Personal Development</h4>
+                        <p class="text-sm text-neutral-600">Neglecting personal interests leads to disconnection and reduced life satisfaction.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow card-hover">
+                        <h4 class="font-bold text-red-600 mb-2">Guilt & Feelings of Failure</h4>
+                        <p class="text-sm text-neutral-600">Pursuing impossible ideals results in guilt and a sense of personal inadequacy.</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h4 class="text-xl font-semibold text-emerald-600 mb-3 text-center">Burnout in Healthcare</h4>
+                        <p class="text-sm text-neutral-600 text-center mb-4">A "silent epidemic" affecting a significant portion of the workforce.</p>
+                        <div class="chart-container">
+                            <canvas id="healthcareBurnoutChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h4 class="text-xl font-semibold text-emerald-600 mb-3 text-center">Stress in Manufacturing</h4>
+                         <p class="text-sm text-neutral-600 text-center mb-4">Work-related stress significantly impacts personal lives.</p>
+                        <div class="chart-container">
+                            <canvas id="manufacturingStressChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="organizational-impacts" class="tab-content">
+                <h3 class="text-2xl font-semibold text-emerald-600 mb-6 text-center">Consequences for Organizations</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
+                     <div class="bg-white p-6 rounded-lg shadow card-hover">
+                        <h4 class="font-bold text-red-600 mb-2">Reduced Productivity & Quality</h4>
+                        <p class="text-sm text-neutral-600">Stressed, burned-out employees are less creative, engaged, and productive. Overwork yields diminishing returns.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow card-hover">
+                        <h4 class="font-bold text-red-600 mb-2">High Turnover Rates</h4>
+                        <p class="text-sm text-neutral-600">Workplace stress is a major driver of employee attrition, incurring significant costs.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow card-hover">
+                        <h4 class="font-bold text-red-600 mb-2">Increased Absenteeism & Healthcare Costs</h4>
+                        <p class="text-sm text-neutral-600">Stress-related health issues lead to more absences and higher medical expenses for employers.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow card-hover">
+                        <h4 class="font-bold text-red-600 mb-2">Negative Organizational Culture</h4>
+                        <p class="text-sm text-neutral-600">Cultures promoting overwork undermine well-being, trust, and talent retention.</p>
+                    </div>
+                </div>
+                <p class="mt-8 text-neutral-700 bg-white p-6 rounded-lg shadow leading-relaxed">These impacts create a vicious cycle, undermining performance. Beliefs like "long hours mean career advancement" lead to burnout, which reduces creativity and increases turnover. A "greedy" work culture is economically inefficient and unsustainable. Organizations must dismantle these myths for resilience and performance.</p>
+            </div>
+        </section>
+
+        <section id="context" class="content-section py-12 md:py-20">
+            <h2 class="text-3xl font-bold text-center text-emerald-700 mb-10">Cultural & Industry-Specific Dimensions</h2>
+            <p class="text-center text-neutral-600 mb-12 max-w-2xl mx-auto">Work-life dynamics are not universal. They are profoundly shaped by societal cultures and specific industry demands. Select an area to explore its unique challenges and perceptions.</p>
+
+            <div class="mb-8 flex justify-center space-x-4">
+                <button class="tab-button bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg active" onclick="openContextTab(event, 'cultural-context')">Cultural Influences</button>
+                <button class="tab-button bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg" onclick="openContextTab(event, 'industry-context')">Industry Challenges</button>
+            </div>
+            
+            <div id="cultural-context" class="context-tab-content active bg-white p-8 rounded-xl shadow-lg border border-amber-200">
+                <h3 class="text-2xl font-semibold text-emerald-600 mb-6 text-center">Global Cultural Influences</h3>
+                <div id="cultural-dimensions-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    </div>
+                 <p class="mt-6 text-neutral-600 leading-relaxed">These cultural variations mean a "one-size-fits-all" work-life solution is itself a myth. Organizations need context-sensitive policies.</p>
+            </div>
+
+            <div id="industry-context" class="context-tab-content bg-white p-8 rounded-xl shadow-lg border border-amber-200">
+                <h3 class="text-2xl font-semibold text-emerald-600 mb-6 text-center">Sector-Specific Challenges</h3>
+                <div id="industry-challenges-container" class="space-y-6">
+                    </div>
+                <div class="mt-8 bg-emerald-50 p-6 rounded-lg shadow">
+                    <h4 class="text-xl font-semibold text-emerald-700 mb-3 text-center">Tech Industry: Benefits of Good WLB</h4>
+                    <p class="text-sm text-neutral-600 text-center mb-4">Despite challenges, positive work-life balance in tech yields tangible benefits.</p>
+                    <div class="chart-container">
+                        <canvas id="techBenefitsChart"></canvas>
+                    </div>
+                </div>
+                <p class="mt-6 text-neutral-600 leading-relaxed">The healthcare industry presents a paradox: a life-saving mission often coupled with a culture normalizing self-sacrifice, leading to burnout that can compromise patient care. This demands systemic cultural shifts, not just individual coping.</p>
+            </div>
+        </section>
+
+        <section id="strategies" class="content-section py-12 md:py-20 bg-amber-100 rounded-xl shadow-lg my-8 p-6 md:p-10">
+            <h2 class="text-3xl font-bold text-center text-emerald-700 mb-10">Strategies for Sustainable Work-Life Integration</h2>
+            <p class="text-center text-neutral-600 mb-12 max-w-2xl mx-auto">Cultivating work-life integration requires effort from both individuals and organizations. Explore actionable strategies to foster a more harmonious and productive life.</p>
+            <div class="grid md:grid-cols-2 gap-10">
+                <div>
+                    <h3 class="text-2xl font-semibold text-emerald-600 mb-6">For Individuals</h3>
+                    <div id="individual-strategies-container" class="space-y-4">
+                        </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold text-emerald-600 mb-6">For Organizations</h3>
+                    <div id="organizational-strategies-container" class="space-y-4">
+                        </div>
+                </div>
+            </div>
+            <p class="mt-10 text-neutral-700 bg-white p-6 rounded-lg shadow leading-relaxed">Effective strategies empower both individuals and organizations, creating a symbiotic relationship. Organizational policies should enable individual choices, and those choices reinforce a healthy culture. The shift to valuing 'quality' over 'quantity' and 'outcomes' over 'hours' is crucial, making work-life integration a strategic imperative for business performance and resilience.</p>
+        </section>
+
+        <section id="conclusion" class="content-section py-12 md:py-20">
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-amber-200 text-center">
+                <h2 class="text-3xl font-bold text-emerald-700 mb-6">A Dynamic Journey Towards a Fulfilling Life</h2>
+                <p class="text-neutral-700 leading-relaxed max-w-3xl mx-auto mb-4">The traditional idea of a static work-life balance is a myth. Modern life is a perpetual state of "unbalance" requiring continuous, conscious "rebalancing" through integration. This isn't a fixed destination but a personalized journey, like riding a bike, demanding constant adjustments.</p>
+                <p class="text-neutral-700 leading-relaxed max-w-3xl mx-auto mb-4">Embracing "integration" or "success" empowers individuals to find what works for them, blending professional and personal spheres for synergy and well-being. This is a shared responsibility, requiring trust, flexibility, and open communication.</p>
+                <p class="text-neutral-700 leading-relaxed max-w-3xl mx-auto font-semibold text-emerald-600">Let go of the myth of perfect balance. Embrace a fluid, personalized approach prioritizing well-being, quality engagement, and meaningful outcomes for a more fulfilling, sustainable, and productive life journey.</p>
+            </div>
+        </section>
+    </main>
+<footer class="bg-amber-200 text-center p-6 mt-12">
+    <p class="text-neutral-600 text-sm">Inspired by the report: "Redefining Equilibrium: Debunking the Myths of Work-Life Balance for a Sustainable Future".</p>
+    <p class="text-neutral-600 text-sm">&copy; <span id="currentYear"></span> Interactive Work-Life Guide. All rights reserved (for this template design).</p>
+    <p class="text-neutral-600 text-sm">Author: Yashodip Wani</p>
+</footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+            mobileMenuButton.setAttribute('aria-expanded', !expanded);
+            mobileMenu.classList.toggle('hidden');
+            mobileMenuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
+        });
+
+        // Smooth scroll and active nav link highlighting
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.content-section');
+
+        function changeNav(targetId) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${targetId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (link.closest('#mobile-menu')) {
+                     mobileMenu.classList.add('hidden');
+                     mobileMenuButton.setAttribute('aria-expanded', 'false');
+                     mobileMenuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
+                }
+            });
+        });
+
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    changeNav(entry.target.id);
+                }
+            });
+        }, { rootMargin: "-50% 0px -50% 0px" }); // Adjust rootMargin to trigger when section is in middle of viewport
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+
+        // Data for myths
+        const mythsData = [
+            { title: "Myth 1: Work and Life Are Separate, Opposing Entities", belief: "Work and personal life should be strictly compartmentalized; one detracts from the other. Frames work as 'pain', life as 'pleasure'.", reality: "Work and life are inherently intertwined and interdependent. Positive experiences in one domain can fuel the other. Attempting strict separation can create more stress.", icon: "↔️" },
+            { title: "Myth 2: Balance Means an Equal 50/50 Time Split", belief: "Achieving balance requires an equal division of time and energy (e.g., the '8-8-8 rule').", reality: "Balance is a dynamic, ongoing process of adjustment, prioritizing flexibility and quality of engagement based on shifting needs. It's like 'riding a bike'.", icon: "⚖️" },
+            { title: "Myth 3: Technology Will Solve All Work-Life Problems", belief: "The latest apps and tools will magically fix work-life balance issues and create more leisure time.", reality: "Technology can streamline tasks but is not a magic fix. True balance comes from habits and boundaries; tech can also blur lines and lead to more work.", icon: "📱" },
+            { title: "Myth 4: Strict Time Management is the Sole Key", belief: "Meticulous scheduling and adherence to to-do lists will automatically lead to perfect balance.", reality: "While important, time management isn't sufficient. Focus on prioritizing important outcomes, managing energy, and adapting to unpredictability. Beware the 'efficiency trap'.", icon: "⏱️" },
+            { title: "Myth 5: It's Solely the Employer's Responsibility", belief: "Employers are solely responsible for providing work-life balance through policies and benefits.", reality: "Achieving work-life integration is a shared responsibility, requiring proactive individual effort alongside critical organizational support.", icon: "🏢" },
+            { title: "Myth 6: The Pursuit of 'Having It All' Leads to Fulfillment", belief: "One can perfectly excel in all aspects of life (career, family, hobbies) simultaneously without compromise.", reality: "'Having it all' is not truly possible due to limited resources. Conscious choices and sacrifices are necessary for sustainable well-being. This myth can cause immense guilt.", icon: "🏆" }
+        ];
+
+        const mythsContainer = document.getElementById('myths-container');
+        mythsData.forEach(myth => {
+            const mythElement = `
+                <div class="bg-white rounded-xl shadow-lg border border-amber-200 overflow-hidden card-hover">
+                    <button class="w-full text-left p-6 focus:outline-none accordion-trigger">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-xl font-semibold text-emerald-600 flex items-center"><span class="text-2xl mr-3">${myth.icon}</span>${myth.title}</h3>
+                            <span class="transform transition-transform duration-300 text-emerald-600 text-2xl">&#x25BC;</span>
+                        </div>
+                    </button>
+                    <div class="accordion-content bg-emerald-50 px-6 pb-6">
+                        <div class="mt-4 grid md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-semibold text-red-500 mb-1">Traditional Belief:</h4>
+                                <p class="text-sm text-neutral-600">${myth.belief}</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-emerald-700 mb-1">Integrated Reality:</h4>
+                                <p class="text-sm text-neutral-600">${myth.reality}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            mythsContainer.innerHTML += mythElement;
+        });
+        
+        // Accordion functionality
+        function setupAccordion(containerSelector) {
+            const accordionTriggers = document.querySelectorAll(`${containerSelector} .accordion-trigger`);
+            accordionTriggers.forEach(trigger => {
+                trigger.addEventListener('click', () => {
+                    const content = trigger.nextElementSibling;
+                    const icon = trigger.querySelector('span.transform');
+                    
+                    // Close other open accordions within the same container
+                    if (containerSelector) { // Only apply "close others" if a specific container is targeted
+                        const allContent = document.querySelectorAll(`${containerSelector} .accordion-content`);
+                        const allIcons = document.querySelectorAll(`${containerSelector} .accordion-trigger span.transform`);
+                        
+                        allContent.forEach(item => {
+                            if (item !== content && item.classList.contains('open')) {
+                                item.classList.remove('open');
+                                item.style.maxHeight = null;
+                            }
+                        });
+                        allIcons.forEach(itemIcon => {
+                             if (itemIcon !== icon && itemIcon.innerHTML === '&#x25B2;') {
+                                itemIcon.innerHTML = '&#x25BC;'; // Down arrow
+                                itemIcon.classList.remove('rotate-180');
+                            }
+                        });
+                    }
+
+                    content.classList.toggle('open');
+                    if (content.classList.contains('open')) {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.innerHTML = '&#x25B2;'; // Up arrow
+                        icon.classList.add('rotate-180');
+                    } else {
+                        content.style.maxHeight = null;
+                        icon.innerHTML = '&#x25BC;'; // Down arrow
+                        icon.classList.remove('rotate-180');
+                    }
+                });
+            });
+        }
+        setupAccordion('#myths-container');
+
+
+        // Tab functionality for Impacts and Context sections
+        function openTab(event, tabName) {
+            let i, tabcontent, tabbuttons;
+            const parentSection = event.currentTarget.closest('section');
+            tabcontent = parentSection.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+            tabbuttons = parentSection.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].classList.remove("active");
+            }
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.classList.add("active");
+        }
+        
+        function openContextTab(event, tabName) {
+            let i, tabcontent, tabbuttons;
+            const parentSection = event.currentTarget.closest('section'); // Assuming buttons are within the section
+            tabcontent = parentSection.getElementsByClassName("context-tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+            tabbuttons = parentSection.getElementsByClassName("tab-button"); // Ensure these buttons are also scoped if necessary
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].classList.remove("active");
+            }
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.classList.add("active");
+        }
+
+
+        // Chart.js: Healthcare Burnout
+        const healthcareCtx = document.getElementById('healthcareBurnoutChart').getContext('2d');
+        new Chart(healthcareCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Healthcare Workers Affected by Burnout'],
+                datasets: [{
+                    label: '% Affected',
+                    data: [50], // Nearly 50%
+                    backgroundColor: ['rgba(220, 38, 38, 0.6)'], // red-600
+                    borderColor: ['rgba(220, 38, 38, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { beginAtZero: true, max: 100, ticks: { callback: function(value) { return value + "%" } } },
+                    y: { ticks: { autoSkip: false, callback: function(value) {
+                        const label = this.getLabelForValue(value);
+                        if (label.length > 16) { return label.match(/.{1,16}/g) || []; } return label;
+                    }}}
+                },
+                plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(context) { return context.dataset.label + ': ' + context.raw + '%'; } } } }
+            }
+        });
+
+        // Chart.js: Manufacturing Stress
+        const manufacturingCtx = document.getElementById('manufacturingStressChart').getContext('2d');
+        new Chart(manufacturingCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Manufacturing Employees Reporting Work-Related Stress'],
+                datasets: [{
+                    label: '% Reporting Stress',
+                    data: [70], // Nearly 70%
+                    backgroundColor: ['rgba(220, 38, 38, 0.6)'], // red-600
+                    borderColor: ['rgba(220, 38, 38, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { beginAtZero: true, max: 100, ticks: { callback: function(value) { return value + "%" } } },
+                     y: { ticks: { autoSkip: false, callback: function(value) {
+                        const label = this.getLabelForValue(value);
+                        if (label.length > 16) { return label.match(/.{1,16}/g) || []; } return label;
+                    }}}
+                },
+                plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(context) { return context.dataset.label + ': ' + context.raw + '%'; } } } }
+            }
+        });
+        
+        // Chart.js: Tech Industry Benefits
+        const techBenefitsCtx = document.getElementById('techBenefitsChart').getContext('2d');
+        new Chart(techBenefitsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Lower Industry Turnover', 'Reduction in Healthcare Costs for Employers'],
+                datasets: [{
+                    label: 'Benefit Percentage',
+                    data: [25, 50],
+                    backgroundColor: ['rgba(5, 150, 105, 0.6)', 'rgba(5, 150, 105, 0.8)'], // emerald-600
+                    borderColor: ['rgba(5, 150, 105, 1)', 'rgba(5, 150, 105, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 60, ticks: { callback: function(value) { return value + "%" } } },
+                    x: { ticks: { autoSkip: false, callback: function(value) {
+                        const label = this.getLabelForValue(value);
+                        if (label.length > 16) { return label.match(/.{1,16}/g) || []; } return label;
+                    }}}
+                },
+                plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(context) { return context.raw + '% ' + context.label.toLowerCase(); } } } }
+            }
+        });
+
+        // Data for Cultural Dimensions
+        const culturalDimensionsData = [
+            { name: "Individualism vs. Collectivism", description: "Individualistic (e.g., US): Emphasis on personal achievement, potentially longer hours. Collectivist (e.g., Japan): Focus on group harmony, balance tied to company/family loyalty.", icon: "👥" },
+            { name: "Power Distance", description: "High (e.g., India): Pressure to work late for authority. Low (e.g., Denmark): Encourages protecting personal time, more autonomy.", icon: "👑" },
+            { name: "Masculinity vs. Femininity", description: "Masculine (e.g., Germany): Success by career/finance, personal time may suffer. Feminine (e.g., Netherlands): Prioritizes quality of life, supports integration.", icon: "⚖️" },
+            { name: "Uncertainty Avoidance", description: "High (e.g., France): Prefer structure, formal policies, rigid hours. Low (e.g., UK): More adaptable to flexible policies.", icon: "❓" },
+            { name: "Time Orientation", description: "Short-term (e.g., US): Value quick wins, intense work. Long-term (e.g., China): Invest in well-being for sustainable benefits.", icon: "⏳" }
+        ];
+        const culturalContainer = document.getElementById('cultural-dimensions-container');
+        culturalDimensionsData.forEach(dim => {
+            culturalContainer.innerHTML += `
+                <div class="bg-amber-50 p-4 rounded-lg shadow card-hover">
+                    <h4 class="font-semibold text-emerald-700 mb-2 flex items-center"><span class="text-xl mr-2">${dim.icon}</span>${dim.name}</h4>
+                    <p class="text-sm text-neutral-600">${dim.description}</p>
+                </div>
+            `;
+        });
+
+        // Data for Industry Challenges
+        const industryData = [
+            { 
+                name: "Tech Industry", 
+                perception: "Critical goal, but challenging due to innovation pace and competition. Benefits: 25% lower turnover, 50% healthcare cost reduction for employers.", 
+                challenges: "Long hours, tight deadlines, constant skill updates, high stress, 'workaholic' prevalence. Remote work can blur boundaries.",
+                icon: "💻"
+            },
+            { 
+                name: "Healthcare Industry", 
+                perception: "Often a 'nice-to-have', culture normalizes self-sacrifice. Waiting for the 'right' moment to rest is a gamble.", 
+                challenges: "Continuous/unpredictable demands, emotional toll, habit of saying 'yes' to extra work, severe burnout (nearly 50%). Gender-specific challenges for women physicians.",
+                icon: "⚕️"
+            },
+            { 
+                name: "Manufacturing Industry", 
+                perception: "Critical and challenging due to operational nature. ~70% report work-related stress affecting personal lives.", 
+                challenges: "24/7 schedules, rotating shifts disrupting rhythms, physical demands, high-pressure production, safety concerns.",
+                icon: "🏭"
+            },
+            { 
+                name: "Creative Industries", 
+                perception: "Struggle with balance, culture of 'working around the clock', 'hustling hard', driven by passion.", 
+                challenges: "Late nights, intense dedication blurring work/personal time. Parenthood forces re-evaluation.",
+                icon: "🎨"
+            }
+        ];
+        const industryContainer = document.getElementById('industry-challenges-container');
+        industryData.forEach(industry => {
+            industryContainer.innerHTML += `
+                <div class="bg-amber-50 rounded-xl shadow-lg overflow-hidden card-hover">
+                    <button class="w-full text-left p-6 focus:outline-none accordion-trigger">
+                        <div class="flex items-center justify-between">
+                             <h3 class="text-xl font-semibold text-emerald-600 flex items-center"><span class="text-2xl mr-3">${industry.icon}</span>${industry.name}</h3>
+                            <span class="transform transition-transform duration-300 text-emerald-600 text-2xl">&#x25BC;</span>
+                        </div>
+                    </button>
+                    <div class="accordion-content bg-white px-6 pb-6">
+                        <div class="mt-4">
+                            <h4 class="font-semibold text-emerald-700 mb-1">Perception:</h4>
+                            <p class="text-sm text-neutral-600 mb-3">${industry.perception}</p>
+                            <h4 class="font-semibold text-red-500 mb-1">Challenges:</h4>
+                            <p class="text-sm text-neutral-600">${industry.challenges}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        setupAccordion('#industry-challenges-container');
+
+        // Data for Strategies
+        const strategiesData = {
+            individual: [
+                { category: "Mindset Shift", actions: ["Redefine productivity: focus on impact/value, not hours.", "Value progress over perfection."], icon:"🧠" },
+                { category: "Boundary Management", actions: ["Set and communicate flexible boundaries (e.g., turn off notifications).", "Learn to say 'no' to non-essentials."], icon:"🚧" },
+                { category: "Well-being Practices", actions: ["Prioritize self-care (rest, exercise, mindfulness).", "Block time for rejuvenation; outsource tasks if possible."], icon:"🧘" },
+                { category: "Resource Management", actions: ["Use technology wisely to streamline, avoid constant connectivity.", "Prioritize tasks effectively."], icon:"🛠️" },
+                { category: "Adaptability & Support", actions: ["Cultivate self-compassion, embrace unpredictability.", "Build support systems (family, friends, colleagues)."], icon:"🤝" }
+            ],
+            organizational: [
+                { category: "Flexible Work & Culture", actions: ["Offer diverse flexible work options (remote, flex hours).", "Foster a culture of trust and autonomy; measure by results."], icon:"🏢" },
+                { category: "Well-being Investment", actions: ["Invest in comprehensive well-being programs (mental, physical, family).", "Encourage vacation and breaks."], icon:"💚" },
+                { category: "Leadership & Communication", actions: ["Leaders model healthy work-life integration.", "Maintain transparent communication about goals and expectations."], icon:"🗣️" },
+                { category: "Tailored Approaches", actions: ["Tailor strategies to local cultures and specific industry needs.", "Focus on outcomes, not hours."], icon:"🌍" },
+                { category: "Resource & Workload Management", actions: ["Address root causes of overwork (better planning, realistic workloads).", "Combat understaffing proactively."], icon:"📊" }
+            ]
+        };
+
+        function populateStrategies(containerId, strategiesType) {
+            const container = document.getElementById(containerId);
+            strategiesData[strategiestype].forEach(strat => {
+                let actionsHtml = strat.actions.map(action => `<li class="text-sm text-neutral-600">${action}</li>`).join('');
+                container.innerHTML += `
+                    <div class="bg-white rounded-xl shadow-lg border border-amber-200 overflow-hidden card-hover">
+                        <button class="w-full text-left p-5 focus:outline-none accordion-trigger">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-lg font-semibold text-emerald-600 flex items-center"><span class="text-xl mr-2">${strat.icon}</span>${strat.category}</h4>
+                                <span class="transform transition-transform duration-300 text-emerald-600 text-xl">&#x25BC;</span>
+                            </div>
+                        </button>
+                        <div class="accordion-content bg-emerald-50 px-5 pb-5">
+                            <ul class="list-disc list-inside space-y-1 mt-2">${actionsHtml}</ul>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        populateStrategies('individual-strategies-container', 'individual');
+        populateStrategies('organizational-strategies-container', 'organizational');
+        setupAccordion('#individual-strategies-container');
+        setupAccordion('#organizational-strategies-container');
+
+
+    </script>
+</body>
+</html>
